@@ -1381,6 +1381,17 @@ rpc_status iwdp_on_applicationSentData(rpc_t rpc,
       data, length);
 }
 
+rpc_status iwdp_on_applicationUpdated(rpc_t rpc,
+    const char *app_id, const char *dest_id) {
+  fprintf(stderr, "Removing app_id: %s, adding: %s\n", app_id, dest_id);
+  rpc_status result = iwdp_remove_app_id(rpc, app_id);
+  if (result) {
+    // Error removing app_id
+    return result;
+  }
+  return iwdp_add_app_id(rpc, dest_id);
+}
+
 //
 // STRUCTS
 //
@@ -1600,6 +1611,7 @@ iwdp_iwi_t iwdp_iwi_new(bool is_sim, bool *is_debug) {
   rpc->on_applicationDisconnected = iwdp_on_applicationDisconnected;
   rpc->on_applicationSentListing = iwdp_on_applicationSentListing;
   rpc->on_applicationSentData = iwdp_on_applicationSentData;
+  rpc->on_applicationUpdated = iwdp_on_applicationUpdated;
   rpc->send_plist = iwdp_send_plist;
   rpc->state = iwi;
   iwi->rpc = rpc;

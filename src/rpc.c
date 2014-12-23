@@ -440,12 +440,11 @@ _rpc_applicationUpdated: <dict>
 rpc_status rpc_recv_applicationUpdated(rpc_t self, const plist_t args) {
   char *app_id = NULL;
   char *dest_id = NULL;
-  size_t length = 0;
   rpc_status ret;
   if (!rpc_dict_get_required_string(args, "WIRHostApplicationIdentifierKey",
+        &dest_id) &&
+      !rpc_dict_get_required_string(args, "WIRApplicationIdentifierKey",
         &app_id) &&
-      !rpc_dict_get_required_data(args, "WIRApplicationIdentifierKey",
-        &dest_id, &length) &&
       !self->on_applicationUpdated(self,
         app_id, dest_id)) {
     ret = RPC_SUCCESS;

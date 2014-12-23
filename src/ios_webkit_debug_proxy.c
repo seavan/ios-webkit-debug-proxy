@@ -1389,7 +1389,6 @@ rpc_status iwdp_on_applicationSentData(rpc_t rpc,
 
 rpc_status iwdp_on_applicationUpdated(rpc_t rpc,
     const char *app_id, const char *dest_id) {
-  fprintf(stderr, "Removing app_id: %s, adding: %s\n", app_id, dest_id);
   rpc_status result = iwdp_remove_app_id(rpc, app_id);
   if (result) {
     // Error removing app_id

@@ -1088,9 +1088,6 @@ ws_status iwdp_on_frame(ws_t ws,
       iwdp_ipage_t ipage = iws->ipage;
       if (!ipage) {
         // someone stole our page?
-        /*
-         * Removing this due to segfault when we do not remove com.apple.mobile safari
-         * 
         iwdp_ipage_t p = (iws->page_num ? (iwdp_ipage_t)ht_get_value(
             iwi->page_num_to_ipage, HT_KEY(iws->page_num)) : NULL);
         char *s;
@@ -1102,9 +1099,6 @@ ws_status iwdp_on_frame(ws_t ws,
         ws->on_error(ws, "%s", s);
         ws_status ret = ws->send_close(ws, CLOSE_GOING_AWAY, s);
         free(s);
-        return ret;
-        */
-        ws_status ret = ws->send_close(ws, CLOSE_GOING_AWAY, "stolen page?");
         return ret;
       }
       rpc_t rpc = iwi->rpc;
@@ -1285,7 +1279,7 @@ rpc_status iwdp_on_reportConnectedApplicationList(rpc_t rpc, const rpc_app_t *ap
     const rpc_app_t *a;
     for (a = apps; *a && strcmp((*a)->app_id, *oa); a++) {
     }
-    if (!*a && strcmp(*oa, "com.apple.mobilesafari")) {
+    if (!*a) {
       iwdp_remove_app_id(rpc, *oa);
     }
   }

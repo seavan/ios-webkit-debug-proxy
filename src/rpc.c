@@ -436,17 +436,34 @@ _rpc_applicationUpdated: <dict>
 <key>WIRApplicationIdentifierKey</key>
 <string>PID:536</string>
 </dict>
+
+OR
+
+<key>WIRApplicationBundleIdentifierKey</key>
+<string>com.apple.mobilesafari</string>
+<key>WIRApplicationNameKey</key>
+<string>Safari</string>
+<key>WIRIsApplicationProxyKey</key>
+<false/>
+<key>WIRIsApplicationActiveKey</key>
+<integer>0</integer>
+<key>WIRApplicationIdentifierKey</key>
+<string>PID:730</string>
 */
 rpc_status rpc_recv_applicationUpdated(rpc_t self, const plist_t args) {
   char *app_id = NULL;
   char *dest_id = NULL;
   rpc_status ret;
-  if (!rpc_dict_get_required_string(args, "WIRHostApplicationIdentifierKey",
-        &dest_id) &&
-      !rpc_dict_get_required_string(args, "WIRApplicationIdentifierKey",
-        &app_id) &&
-      !self->on_applicationUpdated(self,
-        app_id, dest_id)) {
+  if (!rpc_dict_get_required_string(args, "WIRHostApplicationIdentifierKey", &app_id)) {
+    if (!rpc_dict_get_required_string(args, "WIRApplicationIdentifierKey", &dest_id) &&
+      !self->on_applicationUpdated(self, app_id, dest_id)) {
+      ret = RPC_SUCCESS;
+    } else {
+      ret = RPC_ERROR;
+    }
+  } else if (!rpc_dict_get_required_string(args, "WIRApplicationNameKey", &app_id) &&
+             !rpc_dict_get_required_string(args, "WIRApplicationIdentifierKey", &dest_id) &&
+             !self->on_applicationUpdated(self, app_id, dest_id)) {
     ret = RPC_SUCCESS;
   } else {
     ret = RPC_ERROR;

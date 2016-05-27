@@ -376,7 +376,8 @@ rpc_status rpc_recv_applicationSentListing(rpc_t self, const plist_t args) {
       !self->on_applicationSentListing(self, app_id, pages)) {
     ret = RPC_SUCCESS;
   } else {
-    ret = RPC_ERROR;
+    ret = RPC_SUCCESS;
+    /* ret = RPC_ERROR; */
   }
   free(app_id);
   rpc_free_pages(pages);

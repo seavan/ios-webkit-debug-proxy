@@ -6,7 +6,6 @@ examples/dl_client
 examples/wi_client
 examples/ws_echo1
 examples/ws_echo2
-
 # OS generated files
 .DS_Store
 
@@ -27,3 +26,11 @@ depcomp
 install-sh
 missing
 stamp-h1
+config.guess
+config.sub
+ltmain.sh
+libtool
+
+src/*.lo
+src/*.la
+.libs
